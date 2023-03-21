@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"github.com/BogdanStaziyev/jungle-test/config"
+	v1 "github.com/BogdanStaziyev/jungle-test/internal/controller/http/v1"
 	"github.com/BogdanStaziyev/jungle-test/pkg/httpserver"
 	"github.com/BogdanStaziyev/jungle-test/pkg/logger"
 	"github.com/BogdanStaziyev/jungle-test/pkg/postgres"
@@ -39,7 +40,7 @@ func Run(conf config.Configuration) {
 	//databases := service.Databases{}
 
 	// Services struct of all services
-	//services := v1.Services{}
+	services := v1.Services{}
 
 	// HTTP server start
 	handler := echo.New()
@@ -47,6 +48,7 @@ func Run(conf config.Configuration) {
 
 	// Waiting signals
 	interrupt := make(chan os.Signal, 1)
+	v1.Router(handler, services, l)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
 
 	select {
