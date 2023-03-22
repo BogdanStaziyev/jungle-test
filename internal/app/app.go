@@ -1,11 +1,17 @@
 package app
 
 import (
+	"errors"
 	"fmt"
 	"github.com/BogdanStaziyev/jungle-test/config"
+	"github.com/BogdanStaziyev/jungle-test/internal/controller/http/middlewares"
 	v1 "github.com/BogdanStaziyev/jungle-test/internal/controller/http/v1"
+	"github.com/BogdanStaziyev/jungle-test/internal/database"
+	"github.com/BogdanStaziyev/jungle-test/internal/service"
 	"github.com/BogdanStaziyev/jungle-test/pkg/httpserver"
+	"github.com/BogdanStaziyev/jungle-test/pkg/jwt"
 	"github.com/BogdanStaziyev/jungle-test/pkg/logger"
+	"github.com/BogdanStaziyev/jungle-test/pkg/passwords"
 	"github.com/BogdanStaziyev/jungle-test/pkg/postgres"
 	"github.com/labstack/echo/v4"
 	"os"
@@ -33,22 +39,48 @@ func Run(conf config.Configuration) {
 	}
 	defer pg.Close()
 
+	// Create token generator
+	tokGen := jwt.NewTokenConstructor(conf.AccessSecret)
+
 	// Create password generator
-	//passGen := passwords.NewGeneratePasswordHash(conf.Cost)
+	passGen := passwords.NewGeneratePasswordHash(conf.Cost)
 
 	// Databases struct of db
-	//databases := service.Databases{}
+	databases := service.Databases{
+		AuthRepo:    database.NewAuthRepo(pg),
+		ImageRepo:   database.NewImageRepo(pg),
+		FileStorage: database.NewStorage(conf.FileStorageLocation),
+	}
+
+	//initialize storage location
+	_, err = os.Stat(conf.FileStorageLocation)
+	if errors.Is(err, os.ErrNotExist) {
+		err = os.Mkdir(conf.FileStorageLocation, os.ModePerm)
+		if err != nil {
+			l.Fatal("storage folder can not be created", "err", err)
+		}
+	} else if err != nil {
+		l.Fatal("storage folder is not available", "err", err)
+	}
 
 	// Services struct of all services
-	services := v1.Services{}
+	services := v1.Services{
+		AuthService:  service.NewAuthService(tokGen, passGen, databases.AuthRepo),
+		ImageService: service.NewImageService(databases.ImageRepo, database.NewStorage(conf.FileStorageLocation)),
+	}
+
+	// Middleware struct of all services
+	middleware := v1.Middleware{
+		AuthMiddleware: middlewares.NewMiddleware(conf.AccessSecret),
+	}
 
 	// HTTP server start
 	handler := echo.New()
+	v1.Router(handler, middleware, services, tokGen, l)
 	server := httpserver.New(handler, httpserver.Port(conf.ServerPort))
 
 	// Waiting signals
 	interrupt := make(chan os.Signal, 1)
-	v1.Router(handler, services, l)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
 
 	select {
