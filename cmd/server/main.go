@@ -1,7 +1,10 @@
 package main
 
 import (
+	// Config
 	"github.com/BogdanStaziyev/jungle-test/config"
+
+	// Internal
 	"github.com/BogdanStaziyev/jungle-test/internal/app"
 )
 

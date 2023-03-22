@@ -9,16 +9,18 @@ import (
 )
 
 type Configuration struct {
-	DatabaseName      string
-	DatabaseHost      string
-	DatabaseUser      string
-	DatabasePassword  string
-	MigrateToVersion  string
-	MigrationLocation string
-	DatabasePort      string
-	LogLevel          string
-	ServerPort        string
-	Cost              string
+	DatabaseName        string
+	DatabaseHost        string
+	DatabaseUser        string
+	DatabasePassword    string
+	MigrateToVersion    string
+	MigrationLocation   string
+	DatabasePort        string
+	LogLevel            string
+	ServerPort          string
+	Cost                string
+	AccessSecret        string
+	FileStorageLocation string
 }
 
 // GetConfiguration returns configuration values from environment variables
@@ -41,16 +43,24 @@ func GetConfiguration() Configuration {
 		migrateToVersion = "latest"
 	}
 
+	//Returns configuration of image store path from environment variables or use default variable
+	staticFilesLocation, set := os.LookupEnv("FILES_LOCATION")
+	if !set {
+		staticFilesLocation = "file_storage"
+	}
+
 	return Configuration{
-		DatabaseName:      os.Getenv("DB_NAME"),
-		DatabaseHost:      os.Getenv("DB_HOST"),
-		DatabaseUser:      os.Getenv("DB_USER"),
-		DatabasePassword:  os.Getenv("DB_PASSWORD"),
-		DatabasePort:      os.Getenv("DB_PORT"),
-		LogLevel:          os.Getenv("LOG_LEVEL"),
-		ServerPort:        os.Getenv("PORT_SERVER"),
-		MigrateToVersion:  migrateToVersion,
-		MigrationLocation: migrationLocation,
-		Cost:              os.Getenv("COST"),
+		DatabaseName:        os.Getenv("DB_NAME"),
+		DatabaseHost:        os.Getenv("DB_HOST"),
+		DatabaseUser:        os.Getenv("DB_USER"),
+		DatabasePassword:    os.Getenv("DB_PASSWORD"),
+		DatabasePort:        os.Getenv("DB_PORT"),
+		LogLevel:            os.Getenv("LOG_LEVEL"),
+		ServerPort:          os.Getenv("PORT_SERVER"),
+		MigrateToVersion:    migrateToVersion,
+		MigrationLocation:   migrationLocation,
+		Cost:                os.Getenv("COST"),
+		AccessSecret:        os.Getenv("ACCESS_SECRET"),
+		FileStorageLocation: staticFilesLocation,
 	}
 }
