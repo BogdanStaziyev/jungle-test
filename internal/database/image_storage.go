@@ -32,8 +32,6 @@ func (s *storage) Save(image *multipart.FileHeader, entityImage *entity.Image) e
 	if err != nil {
 		return err
 	}
-
-	//Copy
 	if _, err = io.Copy(dst, src); err != nil {
 		return err
 	}

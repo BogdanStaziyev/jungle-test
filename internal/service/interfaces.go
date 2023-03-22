@@ -18,7 +18,7 @@ type AuthRepo interface {
 }
 
 type ImageRepo interface {
-	SaveImage(image entity.Image) (int64, error)
+	SaveImage(image entity.Image) error
 	GetImages(id int64) ([]entity.Image, error)
 }
 

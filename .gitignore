@@ -18,4 +18,5 @@
 go.work
 
 .idea
-.env
+#.env
+file_storage

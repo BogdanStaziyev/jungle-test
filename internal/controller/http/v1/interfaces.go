@@ -22,7 +22,7 @@ type AuthService interface {
 }
 
 type ImageService interface {
-	UploadImage(image *multipart.FileHeader, domainImage *entity.Image) (int64, error)
+	UploadImage(image *multipart.FileHeader, entityImage entity.Image) (string, error)
 	DownloadImages(id int64) ([]entity.Image, error)
 }
 

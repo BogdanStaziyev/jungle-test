@@ -17,7 +17,7 @@ func NewAuthRepo(ar *postgres.Postgres) *authRepo {
 }
 
 func (a *authRepo) FindByName(name string) (user entity.User, err error) {
-	sql := `SELECT id, password, name FROM users WHERE name=$1 AND deleted_date IS NULL`
+	sql := `SELECT id, password_hash, username FROM users WHERE name=$1 AND deleted_date IS NULL`
 	err = a.Pool.QueryRow(context.Background(), sql, name).Scan(&user.ID, &user.Password, &user.Name)
 	if err != nil {
 		return entity.User{}, fmt.Errorf("user repository FindByName error: %w", err)
