@@ -1,10 +1,12 @@
 package database
 
 import (
-	"github.com/BogdanStaziyev/jungle-test/internal/entity"
 	"io"
 	"mime/multipart"
 	"os"
+
+	// Internal
+	"github.com/BogdanStaziyev/jungle-test/internal/entity"
 )
 
 type storage struct {
@@ -17,6 +19,8 @@ func NewStorage(path string) *storage {
 	}
 }
 
+// The Save function appears to save the uploaded image file to the local file system.
+// The CreatePath method is used to generate the full path.
 func (s *storage) Save(image *multipart.FileHeader, entityImage *entity.Image) error {
 	//Create current path to image
 	entityImage.CreatePath(image.Filename, s.path)
@@ -32,8 +36,6 @@ func (s *storage) Save(image *multipart.FileHeader, entityImage *entity.Image) e
 	if err != nil {
 		return err
 	}
-
-	//Copy
 	if _, err = io.Copy(dst, src); err != nil {
 		return err
 	}

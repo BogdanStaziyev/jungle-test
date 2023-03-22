@@ -1,10 +1,14 @@
 package middlewares
 
 import (
-	"github.com/BogdanStaziyev/jungle-test/pkg/jwt"
+	"net/http"
+
+	// Echo
 	"github.com/labstack/echo/v4"
 	MW "github.com/labstack/echo/v4/middleware"
-	"net/http"
+
+	// External
+	"github.com/BogdanStaziyev/jungle-test/pkg/jwt"
 )
 
 type authMiddleware struct {
@@ -17,6 +21,8 @@ func NewMiddleware(secret string) *authMiddleware {
 	}
 }
 
+// The ValidateJWT function creates an Echo middleware that uses JWT authentication
+// Returns an error message if the token is not valid.
 func (a *authMiddleware) ValidateJWT() echo.MiddlewareFunc {
 	config := MW.JWTConfig{
 		ErrorHandler: func(err error) error {

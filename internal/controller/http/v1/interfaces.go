@@ -1,9 +1,13 @@
 package v1
 
 import (
-	"github.com/BogdanStaziyev/jungle-test/internal/entity"
-	"github.com/labstack/echo/v4"
 	"mime/multipart"
+
+	// Echo
+	"github.com/labstack/echo/v4"
+
+	// Internal
+	"github.com/BogdanStaziyev/jungle-test/internal/entity"
 )
 
 // Services structure that includes all services
@@ -12,6 +16,7 @@ type Services struct {
 	ImageService
 }
 
+// Middleware structure that includes all middlewares
 type Middleware struct {
 	AuthMiddleware
 }
@@ -22,7 +27,7 @@ type AuthService interface {
 }
 
 type ImageService interface {
-	UploadImage(image *multipart.FileHeader, domainImage *entity.Image) (int64, error)
+	UploadImage(image *multipart.FileHeader, entityImage entity.Image) (string, error)
 	DownloadImages(id int64) ([]entity.Image, error)
 }
 

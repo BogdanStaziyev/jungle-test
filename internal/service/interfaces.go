@@ -1,8 +1,10 @@
 package service
 
 import (
-	"github.com/BogdanStaziyev/jungle-test/internal/entity"
 	"mime/multipart"
+
+	// Internal
+	"github.com/BogdanStaziyev/jungle-test/internal/entity"
 )
 
 // Databases structure that includes all databases
@@ -18,7 +20,7 @@ type AuthRepo interface {
 }
 
 type ImageRepo interface {
-	SaveImage(image entity.Image) (int64, error)
+	SaveImage(image entity.Image) error
 	GetImages(id int64) ([]entity.Image, error)
 }
 
