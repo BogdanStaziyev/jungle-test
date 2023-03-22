@@ -51,11 +51,12 @@ and SOLID principles for future scalability.**
 3. **Upload Image**
     - **Method: POST**
     - ***Url: http://localhost:8080/api/v1/images/upload-picture***
-        - ***Body: "image": <your image>***
+    - ***When uploading, you need to provide an image in a format (for example, JPEG or PNG).***
 
 4. **Get all images**
     - **Method: GET**
     - ***Url: http://localhost:8080/api/v1/images***
+    - ***You can open any image by image_url from response.***
 
 створити сервіс у якому
 
