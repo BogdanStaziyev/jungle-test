@@ -16,8 +16,7 @@ type Token interface {
 }
 
 type tokens struct {
-	expireTime int
-	secret     string
+	secret string
 }
 
 func NewTokenConstructor(secret string) *tokens {

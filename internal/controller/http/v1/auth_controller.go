@@ -46,7 +46,7 @@ func (r registerHandler) Register(ctx echo.Context) error {
 	id, err := r.as.Register(registerUser.RegisterToUser())
 	if err != nil {
 		r.l.Error("auth controller register register response", "err: ", err)
-		return response.ErrorResponse(ctx, http.StatusInternalServerError, "Could not save new user")
+		return response.ErrorResponse(ctx, http.StatusConflict, "Could not save new user, user already exists")
 	}
 	return response.MessageResponse(ctx, http.StatusCreated, fmt.Sprintf("User successfully created: %d", id))
 }
