@@ -3,20 +3,28 @@ package app
 import (
 	"errors"
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+
+	// Echo
+	"github.com/labstack/echo/v4"
+
+	// Config
 	"github.com/BogdanStaziyev/jungle-test/config"
+
+	// Internal
 	"github.com/BogdanStaziyev/jungle-test/internal/controller/http/middlewares"
-	v1 "github.com/BogdanStaziyev/jungle-test/internal/controller/http/v1"
+	"github.com/BogdanStaziyev/jungle-test/internal/controller/http/v1"
 	"github.com/BogdanStaziyev/jungle-test/internal/database"
 	"github.com/BogdanStaziyev/jungle-test/internal/service"
+
+	// External
 	"github.com/BogdanStaziyev/jungle-test/pkg/httpserver"
 	"github.com/BogdanStaziyev/jungle-test/pkg/jwt"
 	"github.com/BogdanStaziyev/jungle-test/pkg/logger"
 	"github.com/BogdanStaziyev/jungle-test/pkg/passwords"
 	"github.com/BogdanStaziyev/jungle-test/pkg/postgres"
-	"github.com/labstack/echo/v4"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 func Run(conf config.Configuration) {
@@ -52,7 +60,7 @@ func Run(conf config.Configuration) {
 		FileStorage: database.NewStorage(conf.FileStorageLocation),
 	}
 
-	//initialize storage location
+	// Initialize storage location
 	_, err = os.Stat(conf.FileStorageLocation)
 	if errors.Is(err, os.ErrNotExist) {
 		err = os.Mkdir(conf.FileStorageLocation, os.ModePerm)
@@ -69,7 +77,7 @@ func Run(conf config.Configuration) {
 		ImageService: service.NewImageService(databases.ImageRepo, database.NewStorage(conf.FileStorageLocation)),
 	}
 
-	// Middleware struct of all services
+	// Middleware struct of all middlewares
 	middleware := v1.Middleware{
 		AuthMiddleware: middlewares.NewMiddleware(conf.AccessSecret),
 	}

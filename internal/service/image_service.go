@@ -1,9 +1,11 @@
 package service
 
 import (
-	"github.com/BogdanStaziyev/jungle-test/internal/entity"
 	"mime/multipart"
 	"net/url"
+
+	// Internal
+	"github.com/BogdanStaziyev/jungle-test/internal/entity"
 )
 
 type imageService struct {
@@ -18,6 +20,8 @@ func NewImageService(imageRepo ImageRepo, imageStorage FileStorage) *imageServic
 	}
 }
 
+// The UploadImage method in the imageService takes a multipart.FileHeader representing the image file to upload
+// And an entity.Image struct representing the metadata of the image.
 func (i *imageService) UploadImage(image *multipart.FileHeader, entityImage entity.Image) (string, error) {
 	err := i.str.Save(image, &entityImage)
 	if err != nil {
@@ -36,6 +40,7 @@ func (i *imageService) UploadImage(image *multipart.FileHeader, entityImage enti
 	return entityImage.URL, nil
 }
 
+// DownloadImages This method returns a slice of entity.Image given a user ID
 func (i *imageService) DownloadImages(id int64) ([]entity.Image, error) {
 	images, err := i.ir.GetImages(id)
 	if err != nil {

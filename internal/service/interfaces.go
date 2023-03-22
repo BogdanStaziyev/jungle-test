@@ -1,8 +1,10 @@
 package service
 
 import (
-	"github.com/BogdanStaziyev/jungle-test/internal/entity"
 	"mime/multipart"
+
+	// Internal
+	"github.com/BogdanStaziyev/jungle-test/internal/entity"
 )
 
 // Databases structure that includes all databases

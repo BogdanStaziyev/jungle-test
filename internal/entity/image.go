@@ -2,7 +2,6 @@ package entity
 
 import (
 	"fmt"
-	response "github.com/BogdanStaziyev/jungle-test/internal/controller/http/responses"
 	"github.com/google/uuid"
 	"path/filepath"
 	"time"
@@ -23,14 +22,4 @@ func (i *Image) CreatePath(fileName, storage string) {
 	// Create file path
 	path := filepath.Join(storage, newFileName)
 	i.Path = filepath.FromSlash(path)
-}
-
-func (i *Image) ImageToResponse() response.Image {
-	return response.Image{
-		ID:          i.ID,
-		UserID:      i.UserID,
-		Path:        i.Path,
-		URL:         i.URL,
-		CreatedDate: i.CreatedDate,
-	}
 }

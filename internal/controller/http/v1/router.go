@@ -18,8 +18,8 @@ func Router(e *echo.Echo, mid Middleware, services Services, token jwt.Token, l 
 	e.Use(MW.Recover())
 	e.Validator = validators.NewValidator()
 
-	e.Static("/file_storage", "file_storage")
 	//Routes
+	e.Static("/file_storage", "file_storage")
 	v1 := e.Group("api/v1")
 	{
 		newRegisterHandler(v1, services.AuthService, l)

@@ -2,7 +2,11 @@ package service
 
 import (
 	"fmt"
+
+	// Internal
 	"github.com/BogdanStaziyev/jungle-test/internal/entity"
+
+	// External
 	"github.com/BogdanStaziyev/jungle-test/pkg/jwt"
 	"github.com/BogdanStaziyev/jungle-test/pkg/passwords"
 )
@@ -21,6 +25,8 @@ func NewAuthService(t jwt.Token, p passwords.Generator, r AuthRepo) *authService
 	}
 }
 
+// The Register function in the authService struct is responsible for registering a new user.
+// Checking if the provided user already exists in the repository, generating a password hash for the user's password.
 func (a *authService) Register(user entity.User) (id int64, err error) {
 	if _, err = a.repo.FindByName(user.Name); err == nil {
 		return id, fmt.Errorf("auth service register, error user already exists: %w", err)
@@ -36,6 +42,9 @@ func (a *authService) Register(user entity.User) (id int64, err error) {
 	return id, nil
 }
 
+// The Login method of the authService struct takes a User entity as input.
+// Tries to find the corresponding user in the database by name, and then checks whether the password.
+// If the password is valid, the method generates an access token using the CreateToken.
 func (a *authService) Login(user entity.User) (accessToken string, err error) {
 	userFromDB, err := a.repo.FindByName(user.Name)
 	if err != nil {

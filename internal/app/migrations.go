@@ -3,12 +3,15 @@ package app
 import (
 	"errors"
 	"fmt"
-	"github.com/BogdanStaziyev/jungle-test/config"
-	"github.com/golang-migrate/migrate/v4"
 	"log"
 	"os"
 	"strconv"
 
+	// Config
+	"github.com/BogdanStaziyev/jungle-test/config"
+
+	// Migrate
+	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/golang-migrate/migrate/v4/source/github"
