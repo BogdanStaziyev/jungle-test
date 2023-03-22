@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"User User\",\n    \"password\": \"1234567890\"\n}",
+							"raw": "{\n    \"username\": \"User User\",\n    \"password\": \"1234567890\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -56,7 +56,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"TEST USER\",\n    \"password\": \"1234567890\"\n}",
+							"raw": "{\n    \"username\": \"TEST USER\",\n    \"password\": \"1234567890\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
